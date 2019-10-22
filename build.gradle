@@ -1,0 +1,33 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.3.31'
+    id 'application'
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    implementation 'com.github.oshi:oshi-core:4.1.0'
+    implementation 'org.slf4j:slf4j-simple:1.7.28'
+
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
+    testImplementation 'org.jetbrains.kotlin:kotlin-test-junit'
+}
+
+jar {
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    manifest {
+        attributes(
+            'Main-Class': 'PiBeat.AppKt'
+        )
+    }
+}
+
+application {
+    mainClassName = 'PiBeat.AppKt'
+}
