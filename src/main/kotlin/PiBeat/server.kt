@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import fi.iki.elonen.NanoHTTPD
 import org.slf4j.LoggerFactory
 
-class WebServer(port: Int): NanoHTTPD(port) {
+class WebServer(port: Int) : NanoHTTPD(port) {
     private val logger = LoggerFactory.getLogger(this.javaClass)
     override fun serve(session: IHTTPSession?): Response {
         logger.info("Processing the request")
