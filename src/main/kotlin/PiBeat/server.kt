@@ -1,24 +1,20 @@
 package PiBeat
 
-import PiBeat.dto.Greet
-import com.fasterxml.jackson.databind.ObjectMapper
+import PiBeat.dto.EveryThing
+import PiBeat.extensions.json
 import fi.iki.elonen.NanoHTTPD
 import org.slf4j.LoggerFactory
+import oshi.SystemInfo
 
 class WebServer(port: Int) : NanoHTTPD(port) {
     private val logger = LoggerFactory.getLogger(this.javaClass)
+
     override fun serve(session: IHTTPSession?): Response {
-        logger.info("Processing the request")
+        logger.info("Processing request")
         if (session == null) {
-            return newFixedLengthResponse("WELL WELL")
+            return newFixedLengthResponse("WELL WELL. WHO ARE YOU?")
         }
-        val msg = Greet("""
-            Hello ${session.headers.get("user-agent")?.split(" ")?.firstOrNull() ?: ""}
-            Your IP address is ${session.remoteIpAddress}
-        """.trimIndent())
-        val resp = newFixedLengthResponse(ObjectMapper().writer().writeValueAsString(msg))
-        resp.mimeType = "application/json"
-        return resp
+        return json(EveryThing(SystemInfo()))
     }
 
     override fun start() {
