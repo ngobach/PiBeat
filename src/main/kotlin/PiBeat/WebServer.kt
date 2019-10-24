@@ -30,6 +30,6 @@ class WebServer(port: Int) : NanoHTTPD(port) {
     }
 
     override fun start() {
-        this.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false)
+        this.start(SOCKET_READ_TIMEOUT, false)
     }
 }
