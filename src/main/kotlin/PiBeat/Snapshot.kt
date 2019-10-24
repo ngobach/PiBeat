@@ -1,12 +1,14 @@
 package PiBeat
 
 import PiBeat.dto.EveryThing
+import org.slf4j.LoggerFactory
 import oshi.SystemInfo
 import java.time.Instant
-import java.util.*
+import java.util.Timer
 import kotlin.concurrent.scheduleAtFixedRate
 
-object Snapshooter : Runnable {
+object Snapshot : Runnable {
+    val logger = LoggerFactory.getLogger(javaClass)
     var lastRecord = EveryThing(SystemInfo())
         private set
 
@@ -16,7 +18,8 @@ object Snapshooter : Runnable {
     private var timer = Timer()
 
     override fun run() {
-        timer.scheduleAtFixedRate(0, 5000) {
+        logger.info("Will capture snapshot at rate of {} ms", Config.snapshotInterval)
+        timer.scheduleAtFixedRate(0, Config.snapshotInterval) {
             lastRecord = EveryThing(SystemInfo())
             lastTime = Instant.now()
         }
