@@ -12,6 +12,10 @@ interface AppConfig : Config {
     @get:Config.Key("snapshot.interval")
     @get:Config.DefaultValue("5000")
     val snapshotInterval: Long
+
+    @get:Config.Key("json.pretty")
+    @get:Config.DefaultValue("false")
+    val jsonPretty: Boolean
 }
 
 val Config: AppConfig = ConfigFactory.create(AppConfig::class.java)
