@@ -13,12 +13,8 @@ class WebServer(port: Int) : NanoHTTPD(port) {
     private val logger = LoggerFactory.getLogger(this.javaClass)
     private val reqHandlers: List<Handler> = listOf(ResourceHandler(), ApiHandler())
 
-    override fun serve(session: IHTTPSession?): Response {
+    override fun serve(session: IHTTPSession): Response {
         logger.info("Processing request")
-
-        if (session == null) {
-            return newFixedLengthResponse("WELL WELL. WHO ARE YOU?")
-        }
 
         for (handler in reqHandlers) {
             handler(session)?.let {
