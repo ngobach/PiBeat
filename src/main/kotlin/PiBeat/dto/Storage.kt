@@ -1,9 +1,8 @@
 package PiBeat.dto
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import oshi.SystemInfo
 
-class Storage(@JsonIgnore private val si: SystemInfo) {
+class Storage(si: SystemInfo) {
     data class Disk(
             val name: String,
             val model: String,
@@ -24,11 +23,11 @@ class Storage(@JsonIgnore private val si: SystemInfo) {
             val volume: String
     )
 
-    val disks get() = si.hardware.diskStores.map {
+    val disks = si.hardware.diskStores.map {
         Disk(it.name, it.model, it.serial, it.size, it.readBytes, it.writeBytes)
     }
 
-    val drives get() = si.operatingSystem.fileSystem.fileStores.map {
+    val drives = si.operatingSystem.fileSystem.fileStores.map {
         Drive(it.name, it.mount, it.totalSpace, it.freeSpace, it.usableSpace, it.type, it.uuid, it.volume)
     }
 }
