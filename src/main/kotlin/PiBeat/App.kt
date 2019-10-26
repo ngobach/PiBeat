@@ -1,18 +1,13 @@
 package PiBeat
 
-fun main(args: Array<String>) {
-    val si = oshi.SystemInfo()
-    println("""
-        Network information
-        ${"=".repeat(80)}
-
-    """.trimIndent())
-    si.hardware.networkIFs.forEach {
-        println("""
-            Interface ${it.displayName}
-            Sent ${it.bytesSent}
-            Recv ${it.bytesRecv}
-            ${"-".repeat(80)}
-        """.trimIndent())
+fun main() {
+    val logger = org.slf4j.LoggerFactory.getLogger("PiBeat")
+    try {
+        Snapshot.run()
+        val server = WebServer(Config.port)
+        server.start()
+        logger.info("Server is listening at ${Config.port}")
+    } catch (e: Exception) {
+        logger.error("Unable to start Web Server", e)
     }
 }
