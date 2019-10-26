@@ -1,5 +1,6 @@
 package PiBeat.handler
 
+import PiBeat.Config
 import fi.iki.elonen.NanoHTTPD
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -28,9 +29,15 @@ class ResourceHandler : PiBeat.Handler {
                     "You are not allowed to access this file"
             )
         }
-        val file = resolved.toFile()
+        var file = resolved.toFile()
+        if (Config.staticIndex && file.isDirectory) {
+            file = resolved.resolve("index.html").toFile()
+        }
+        if (Config.staticFallback && !file.isFile) {
+            file = rootDir.resolve("index.html").toFile()
+        }
         if (file.isFile) {
-            val mime = NanoHTTPD.getMimeTypeForFile(session.uri)
+            val mime = NanoHTTPD.getMimeTypeForFile(file.path)
             return NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.OK, mime, file.inputStream(), file.length())
         }
         return null

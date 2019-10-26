@@ -11,7 +11,7 @@ interface Handler {
 
 class WebServer(port: Int) : NanoHTTPD(port) {
     private val logger = LoggerFactory.getLogger(this.javaClass)
-    private val reqHandlers: List<Handler> = listOf(ResourceHandler(), ApiHandler())
+    private val reqHandlers: List<Handler> = listOf(ApiHandler(), ResourceHandler())
 
     override fun serve(session: IHTTPSession): Response {
         logger.info("Processing request")
