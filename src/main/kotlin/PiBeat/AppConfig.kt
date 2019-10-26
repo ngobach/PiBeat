@@ -1,9 +1,11 @@
 package PiBeat
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import org.aeonbits.owner.Config
 import org.aeonbits.owner.ConfigFactory
 
 @Config.Sources("file:app.properties", "classpath:app.properties")
+@JsonIgnoreProperties("mbeanInfo")
 interface AppConfig : Config {
     @get:Config.Key("server.port")
     @get:Config.DefaultValue("8888")
