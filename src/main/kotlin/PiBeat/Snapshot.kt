@@ -1,26 +1,22 @@
 package PiBeat
 
+import PiBeat.dto.EveryThing
 import org.slf4j.LoggerFactory
 import oshi.SystemInfo
-import io.reactivex.Observable
-import java.util.concurrent.TimeUnit
+import java.time.Instant
 
 object Snapshot : Runnable {
     private val logger = LoggerFactory.getLogger(javaClass)
+    var current: EveryThing? = null
+        private set
+    var timestamp: Long = 0
+        private set
 
     override fun run() {
-        logger.info("Will capture snapshot at rate of {} ms", Config.snapshotInterval)
-        val origin = Observable.interval(Config.snapshotInterval, TimeUnit.MILLISECONDS)
-                .map { SystemInfo() as SystemInfo? }
-        Observable.combineLatest(arrayOf(
-                origin,
-                origin.delay(5, TimeUnit.SECONDS).startWith(null as SystemInfo?),
-                origin.delay(15, TimeUnit.SECONDS).startWith(null as SystemInfo?)
-        )) {
-            (x, y) ->
-                println("$x $y")
-        }.debounce(100, TimeUnit.MILLISECONDS).subscribe {
-
+        val si = SystemInfo()
+        kotlin.concurrent.fixedRateTimer(period = Config.snapshotInterval) {
+            current = EveryThing(si)
+            timestamp = Instant.now().epochSecond
         }
     }
 }
