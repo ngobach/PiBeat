@@ -12,8 +12,8 @@ class ApiHandler : Handler {
     override fun invoke(session: NanoHTTPD.IHTTPSession): NanoHTTPD.Response? {
         val uri = session.uri!!
         return when {
-            uri.contentEquals("/api/get") ->
-                jsonResponse(Payload(Snapshot.lastRecord, Snapshot.lastTime.toEpochMilli()))
+//            uri.contentEquals("/api/get") ->
+//                jsonResponse(Payload(Snapshot.lastRecord, Snapshot.lastTime.toEpochMilli()))
             uri.contentEquals("/api/config") ->
                 jsonResponse(PiBeat.Config)
             else -> null
